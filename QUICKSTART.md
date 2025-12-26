@@ -2,11 +2,12 @@
 
 ## What You Have
 
-A complete Pace Tool single-page application that:
+A complete Pace Tool Progressive Web App (PWA) that:
 - Converts running paces between min/km and min/mi
 - Calculates race times for 5K, 10K, Half Marathon, and Marathon
-- Works entirely offline (no internet needed once built)
-- Can be used as a single HTML file on any device
+- Installs to your phone's home screen like a native app
+- Works entirely offline (no internet needed after installation)
+- Deployed live at: [https://joneholland.github.io/pace-tool/](https://joneholland.github.io/pace-tool/)
 
 ## Quick Commands
 
@@ -17,30 +18,46 @@ npm install
 # Start development (to see it working and make changes)
 npm run dev
 
-# Build final single HTML file
+# Build final single HTML file with PWA assets
 npm run build
+
+# Deploy to GitHub Pages
+npm run deploy
 ```
+
+## Use It Online (Easiest!)
+
+Just visit [https://joneholland.github.io/pace-tool/](https://joneholland.github.io/pace-tool/) on your phone and add it to your home screen!
 
 ## Your Built File
 
 After running `npm run build`, you'll find:
 - **File location**: `dist/index.html`
-- **File size**: ~200-400KB
-- **What's included**: Everything! All code, styles, and fonts are bundled inside
+- **File size**: ~240KB
+- **What's included**: Everything! Code, styles, fonts, PWA manifest, service worker, and app icons
 
-## How to Use It
+## How to Install as PWA
 
-### Desktop
-Just double-click `dist/index.html`
+### iPhone/iPad (Recommended)
+1. Open [https://joneholland.github.io/pace-tool/](https://joneholland.github.io/pace-tool/) in **Safari**
+2. Tap the **Share** button (square with arrow)
+3. Scroll down and tap **"Add to Home Screen"**
+4. Tap **"Add"**
+5. The app icon will appear on your home screen!
 
-### iPhone/iPad
-1. AirDrop the file from Mac to iPhone
-2. Save to Files app
-3. Tap to open in Safari
+**Features:**
+- ✅ Works offline (even after phone restarts)
+- ✅ Opens in fullscreen (no browser bars)
+- ✅ Custom amber/brown app icon
+- ✅ Fast loading from cache
 
 ### Android
-1. Transfer file via USB, email, or cloud storage
-2. Open with any browser
+1. Open [https://joneholland.github.io/pace-tool/](https://joneholland.github.io/pace-tool/) in **Chrome**
+2. Tap menu (⋮) → **"Add to Home screen"** or **"Install app"**
+3. Tap **"Add"**
+
+### Desktop (Local File)
+Just double-click `dist/index.html` to open in your browser
 
 ## Features Overview
 

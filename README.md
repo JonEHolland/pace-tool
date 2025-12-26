@@ -1,6 +1,8 @@
 # Pace Tool
 
-A mobile-first single-page application for converting running paces and calculating race times. Built with React + TypeScript, designed to work offline without a server.
+A mobile-first Progressive Web App (PWA) for converting running paces and calculating race times. Built with React + TypeScript, designed to work completely offline.
+
+🔗 **Live App**: [https://joneholland.github.io/pace-tool/](https://joneholland.github.io/pace-tool/)
 
 ## Features
 
@@ -8,9 +10,12 @@ A mobile-first single-page application for converting running paces and calculat
 - **Race Time Calculator**: Calculate finish times for 5K, 10K, Half Marathon, and Marathon distances
 - **iOS-Style Wheel Picker**: Intuitive time selection interface
 - **Two-Way Sync**: Adjust pace by scrolling race times or using the picker
+- **Progressive Web App**: Install to home screen on iOS/Android
+- **Fully Offline**: Works without internet after first load
+- **Custom App Icon**: Matches app design with amber/brown theme
 - **Mobile-First Design**: Responsive layout optimized for mobile devices
 - **Light/Dark Mode**: Automatically adapts to system preferences
-- **Offline-Ready**: Single HTML file that works without internet
+- **Portable**: Single 240KB HTML file with all assets embedded
 
 ## Design
 
@@ -25,7 +30,9 @@ The app follows an editorial design brief with:
 - React 18 with TypeScript
 - Vite for build tooling
 - CSS Modules for styling
-- Single-file bundle for maximum portability
+- Service Worker for offline support
+- GitHub Pages for deployment
+- Single-file bundle with embedded assets (icons, manifest, service worker)
 
 ## Development
 
@@ -53,17 +60,41 @@ This will start a local development server, typically at `http://localhost:5173`
 npm run build
 ```
 
-This creates a single `dist/index.html` file with all assets (CSS, JS, fonts) inlined. This file can be:
-- Opened directly in any web browser
-- Transferred to a mobile device
-- Hosted on any static file server
-- Shared via email or file transfer
+This creates:
+- A single `dist/index.html` file (~240KB) with all assets embedded
+- Icons as data URIs
+- Service worker inlined for offline support
+- Manifest embedded for PWA functionality
+
+### Deploying to GitHub Pages
+
+```bash
+npm run deploy
+```
+
+This builds and publishes to GitHub Pages automatically.
 
 ### Preview Production Build
 
 ```bash
 npm run preview
 ```
+
+## Installation on Mobile
+
+### iPhone/iPad
+1. Open [https://joneholland.github.io/pace-tool/](https://joneholland.github.io/pace-tool/) in **Safari**
+2. Tap the **Share** button
+3. Scroll down and tap **"Add to Home Screen"**
+4. Tap **"Add"**
+
+The app will appear on your home screen with a custom icon and work completely offline!
+
+### Android
+1. Open [https://joneholland.github.io/pace-tool/](https://joneholland.github.io/pace-tool/) in **Chrome**
+2. Tap the menu button (⋮)
+3. Tap **"Add to Home screen"** or **"Install app"**
+4. Tap **"Add"**
 
 ## Usage
 
@@ -72,6 +103,15 @@ npm run preview
 3. **View Conversions**: See equivalent pace in the other unit
 4. **Check Race Times**: View calculated finish times for common race distances
 5. **Scroll to Adjust**: Scroll the race times section to fine-tune your pace
+
+## PWA Features
+
+Once installed on your device:
+- ✅ Works completely offline (even after phone restarts)
+- ✅ Opens in fullscreen mode (no browser UI)
+- ✅ Custom app icon matching the app's design
+- ✅ Fast loading from cache
+- ✅ No internet connection required
 
 ## File Structure
 
