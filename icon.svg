@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Background - Dark Brown (matching app) -->
+  <rect width="512" height="512" fill="#2B1911" rx="128"/>
+  
+  <!-- Main pace display - simplified for icon clarity -->
+  <g>
+    <!-- Digit background cards (like the wheel picker) -->
+    <rect x="90" y="140" width="150" height="200" rx="18" fill="#3C2417"/>
+    <rect x="272" y="140" width="150" height="200" rx="18" fill="#3C2417"/>
+    
+    <!-- Numbers in Amber -->
+    <text x="165" y="280" font-family="Inter, sans-serif" font-size="120" font-weight="800" fill="#FFC93F" text-anchor="middle" dominant-baseline="middle">5</text>
+    <text x="347" y="280" font-family="Inter, sans-serif" font-size="120" font-weight="800" fill="#FFC93F" text-anchor="middle" dominant-baseline="middle">30</text>
+    
+    <!-- Colon separator -->
+    <circle cx="256" cy="220" r="12" fill="#FFC93F"/>
+    <circle cx="256" cy="280" r="12" fill="#FFC93F"/>
+    
+    <!-- Label at bottom -->
+    <text x="256" y="400" font-family="Inter, sans-serif" font-size="32" font-weight="700" fill="rgba(255, 201, 63, 0.6)" text-anchor="middle" letter-spacing="0.1em">PACE</text>
+  </g>
+</svg>
+
