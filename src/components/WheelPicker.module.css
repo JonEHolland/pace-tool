@@ -1,0 +1,127 @@
+.wheelPicker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 200px;
+  position: relative;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: pan-y;
+}
+
+.wheel {
+  flex: 1;
+  height: 100%;
+  position: relative;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  scroll-snap-type: y mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.wheel::-webkit-scrollbar {
+  display: none;
+}
+
+.wheelInner {
+  position: relative;
+  width: 100%;
+  padding: 80px 0;
+}
+
+.spacer {
+  height: 40px;
+  flex-shrink: 0;
+  display: none;
+}
+
+.wheelItem {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--size-metric);
+  line-height: var(--line-metric);
+  letter-spacing: var(--tracking-metric);
+  font-weight: var(--weight-black);
+  color: var(--text-primary);
+  opacity: 0.35;
+  transition: opacity 150ms ease-out, transform 150ms ease-out;
+  cursor: pointer;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+}
+
+.wheelItem.selected {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.wheelItem.near {
+  opacity: 0.65;
+}
+
+.wheelItem:hover {
+  opacity: 0.8;
+}
+
+.separator {
+  font-size: 28px;
+  font-weight: var(--weight-black);
+  color: var(--text-primary);
+  margin: 0 4px;
+  flex-shrink: 0;
+}
+
+.highlight {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 40px;
+  transform: translateY(-50%);
+  background: var(--primary-300);
+  opacity: 0.25;
+  border-radius: 14px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  .highlight {
+    opacity: 0.16;
+  }
+}
+
+:root[data-theme="dark"] .highlight {
+  opacity: 0.16;
+}
+
+.wheel {
+  z-index: 1;
+}
+
+.fade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 60px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.fadeTop {
+  top: 0;
+  background: linear-gradient(to bottom, var(--surface) 0%, transparent 100%);
+}
+
+.fadeBottom {
+  bottom: 0;
+  background: linear-gradient(to top, var(--surface) 0%, transparent 100%);
+}

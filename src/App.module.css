@@ -1,0 +1,36 @@
+.app {
+  width: 100%;
+  min-height: 100vh;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 24px;
+}
+
+@media (min-width: 768px) {
+  .app {
+    padding: 24px;
+  }
+
+  .container {
+    background: var(--bg);
+    border-radius: var(--radius-screen);
+    box-shadow: 0 24px 64px var(--shadow-soft);
+  }
+}
+
+@media (prefers-color-scheme: dark) and (min-width: 768px) {
+  .container {
+    box-shadow: 0 24px 64px var(--shadow-hard);
+  }
+}
+

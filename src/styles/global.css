@@ -1,0 +1,112 @@
+/* Global Styles - Pace Tool */
+
+/* Inter Font */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: var(--font-primary);
+  font-size: var(--size-body);
+  line-height: var(--line-body);
+  letter-spacing: var(--tracking-body);
+  color: var(--text-primary);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  touch-action: pan-y;
+  overscroll-behavior: none;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Typography Utilities */
+.display {
+  font-size: var(--size-display);
+  line-height: var(--line-display);
+  letter-spacing: var(--tracking-display);
+  font-weight: var(--weight-black);
+}
+
+.h1 {
+  font-size: var(--size-h1);
+  line-height: var(--line-h1);
+  letter-spacing: var(--tracking-h1);
+  font-weight: var(--weight-black);
+}
+
+.h2 {
+  font-size: var(--size-h2);
+  line-height: var(--line-h2);
+  letter-spacing: var(--tracking-h2);
+  font-weight: var(--weight-bold);
+}
+
+.metric {
+  font-size: var(--size-metric);
+  line-height: var(--line-metric);
+  letter-spacing: var(--tracking-metric);
+  font-weight: var(--weight-black);
+}
+
+.label {
+  font-size: var(--size-label);
+  line-height: var(--line-label);
+  letter-spacing: var(--tracking-label);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.body {
+  font-size: var(--size-body);
+  line-height: var(--line-body);
+  letter-spacing: var(--tracking-body);
+  font-weight: var(--weight-medium);
+}
+
+.caption {
+  font-size: var(--size-caption);
+  line-height: var(--line-caption);
+  letter-spacing: var(--tracking-caption);
+  font-weight: var(--weight-medium);
+}
+
+/* Animations */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(0.98);
+  }
+}
+
+.pulse {
+  animation: pulse 300ms ease-out;
+}
+
+/* Smooth transitions */
+* {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-duration: 150ms;
+  transition-timing-function: ease-in-out;
+}
+

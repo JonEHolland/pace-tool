@@ -1,0 +1,129 @@
+/* Design Tokens - Pace Tool */
+
+:root {
+  /* Primary Color - Amber */
+  --primary-50: #FFF7E0;
+  --primary-100: #FFE9B0;
+  --primary-200: #FFD980;
+  --primary-300: #FFC93F;
+  --primary-400: #F6B828;
+  --primary-500: #E4A400;
+  --primary-600: #C68B00;
+  --primary-700: #9E6F00;
+  --primary-800: #775300;
+  --primary-900: #503800;
+
+  /* Secondary Color - Brown */
+  --secondary-50: #F3EEE9;
+  --secondary-100: #E5D8CF;
+  --secondary-200: #CBB3A3;
+  --secondary-300: #B18F79;
+  --secondary-400: #8D6B55;
+  --secondary-500: #6A4B3A;
+  --secondary-600: #4F3428;
+  --secondary-700: #3C2417;
+  --secondary-800: #2B1911;
+  --secondary-900: #1A0F0A;
+
+  /* Grays */
+  --gray-bg-canvas: #ECEBE9;
+  --gray-50: #F6F6F5;
+  --gray-100: #EFEFED;
+  --gray-200: #E6E6E3;
+  --gray-600: #8A8A8A;
+  --gray-700: #676767;
+  --divider-light: rgba(0, 0, 0, 0.08);
+  --divider-dark: rgba(255, 255, 255, 0.10);
+
+  /* Accents */
+  --shadow-soft: rgba(0, 0, 0, 0.18);
+  --shadow-hard: rgba(0, 0, 0, 0.28);
+  --scrim: rgba(0, 0, 0, 0.22);
+  --glass: rgba(255, 255, 255, 0.10);
+
+  /* Typography */
+  --font-primary: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-bold: 700;
+  --weight-black: 800;
+
+  /* Type Scale */
+  --size-display: 52px;
+  --line-display: 0.95;
+  --tracking-display: -0.02em;
+
+  --size-h1: 38px;
+  --line-h1: 0.98;
+  --tracking-h1: -0.02em;
+
+  --size-h2: 24px;
+  --line-h2: 1.05;
+  --tracking-h2: -0.01em;
+
+  --size-metric: 34px;
+  --line-metric: 0.95;
+  --tracking-metric: -0.02em;
+
+  --size-label: 12px;
+  --line-label: 1.10;
+  --tracking-label: 0.00em;
+
+  --size-body: 14px;
+  --line-body: 1.25;
+  --tracking-body: 0.00em;
+
+  --size-caption: 11px;
+  --line-caption: 1.20;
+  --tracking-caption: 0.00em;
+
+  /* Layout */
+  --radius-screen: 28px;
+  --radius-card: 18px;
+  --radius-pill: 999px;
+
+  --spacing-screen-x: 18px;
+  --spacing-screen-top: 14px;
+  --spacing-section-gap: 14px;
+  --spacing-card: 14px;
+  --spacing-row-y: 12px;
+
+  --divider-thickness: 1px;
+
+  /* Semantic Tokens - Light Mode (default) */
+  --bg: var(--gray-200);
+  --surface: var(--gray-50);
+  --surface-alt: var(--gray-100);
+  --text-primary: var(--secondary-800);
+  --text-secondary: rgba(0, 0, 0, 0.55);
+  --text-on-primary: var(--secondary-800);
+  --accent: var(--primary-300);
+  --divider: var(--divider-light);
+}
+
+/* Dark Mode - explicit theme */
+:root[data-theme="dark"] {
+  --bg: var(--secondary-800);
+  --surface: var(--secondary-700);
+  --surface-alt: var(--secondary-900);
+  --text-primary: var(--primary-300);
+  --text-secondary: rgba(255, 255, 255, 0.70);
+  --text-on-primary: var(--secondary-800);
+  --accent: var(--primary-300);
+  --divider: var(--divider-dark);
+}
+
+/* Dark Mode - system preference (when no explicit theme set) */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: var(--secondary-800);
+    --surface: var(--secondary-700);
+    --surface-alt: var(--secondary-900);
+    --text-primary: var(--primary-300);
+    --text-secondary: rgba(255, 255, 255, 0.70);
+    --text-on-primary: var(--secondary-800);
+    --accent: var(--primary-300);
+    --divider: var(--divider-dark);
+  }
+}
+
