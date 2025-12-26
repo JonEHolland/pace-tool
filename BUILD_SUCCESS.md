@@ -60,8 +60,7 @@ Your Pace Tool PWA has been **successfully built and deployed**! 🎉
 ✅ Unit toggle (min/km ↔ min/mi)  
 ✅ Real-time pace conversion  
 ✅ Race time calculations (5K, 10K, Half, Marathon)  
-✅ Two-way synchronization (picker ↔ scroll)  
-✅ Scroll the race section to adjust pace  
+✅ Instant updates when changing pace  
 ✅ Pulse animations when values change  
 ✅ Floating pace badge  
 ✅ Light/dark mode support  
@@ -124,7 +123,6 @@ npm run preview
    - Toggle between min/km and min/mi
    - Check pace conversions
    - View race time calculations
-   - Scroll the race section to adjust pace
 3. **Install as PWA**:
    - iOS: Safari → Share → Add to Home Screen
    - Android: Chrome → Menu → Install app

@@ -72,13 +72,12 @@ Just double-click `dist/index.html` to open in your browser
 
 ### Race Times Section
 - Shows finish times for 5K, 10K, Half Marathon, Marathon
-- **Scroll to adjust pace**: You can scroll this section up/down to fine-tune your pace
+- Updates automatically when you change pace
 - Floating badge shows current pace
 
-### Two-Way Control
-1. Adjust the wheel picker → race times update
-2. Scroll the race section → wheel picker updates
-3. Switch units → keeps same speed, converts pace
+### Live Updates
+1. Adjust the wheel picker → race times update instantly
+2. Switch units → keeps same speed, converts pace and race times
 
 ## Design Features
 
@@ -162,8 +161,8 @@ pace-tool/
 ## Tips
 
 1. **The single HTML file is completely self-contained** - you can rename it, move it anywhere, email it, etc.
-2. **Scroll the race times section** to quickly adjust pace without using the picker
-3. **Works offline** - once built, no internet connection needed
-4. **Mobile-friendly** - designed for touch, works great on phones
-5. **Light and dark mode** - automatically adapts to your system settings
+2. **Works offline** - once installed as PWA, no internet connection needed
+3. **Mobile-friendly** - designed for touch, works great on phones
+4. **Light and dark mode** - automatically adapts to your system settings
+5. **Install as PWA** - Add to home screen for app-like experience
 

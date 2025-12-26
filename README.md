@@ -9,7 +9,6 @@ A mobile-first Progressive Web App (PWA) for converting running paces and calcul
 - **Pace Conversion**: Convert between min/km and min/mi paces
 - **Race Time Calculator**: Calculate finish times for 5K, 10K, Half Marathon, and Marathon distances
 - **iOS-Style Wheel Picker**: Intuitive time selection interface
-- **Two-Way Sync**: Adjust pace by scrolling race times or using the picker
 - **Progressive Web App**: Install to home screen on iOS/Android
 - **Fully Offline**: Works without internet after first load
 - **Custom App Icon**: Matches app design with amber/brown theme
@@ -102,7 +101,6 @@ The app will appear on your home screen with a custom icon and work completely o
 2. **Choose Unit**: Toggle between min/km and min/mi
 3. **View Conversions**: See equivalent pace in the other unit
 4. **Check Race Times**: View calculated finish times for common race distances
-5. **Scroll to Adjust**: Scroll the race times section to fine-tune your pace
 
 ## PWA Features
 
