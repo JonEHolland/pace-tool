@@ -6,15 +6,23 @@ A mobile-first Progressive Web App (PWA) for converting running paces and calcul
 
 ## Features
 
+### Pace Converter
 - **Pace Conversion**: Convert between min/km and min/mi paces
-- **Race Time Calculator**: Calculate finish times for 5K, 10K, Half Marathon, and Marathon distances
+- **Race Time Calculator**: Calculate finish times for 5K, 10K, 15K, 10 Mile, Half Marathon, Marathon, and 50K
 - **iOS-Style Wheel Picker**: Intuitive time selection interface
+
+### Distance Converter
+- **Distance Conversion**: Convert between kilometers and miles
+- **Precision Input**: Two-wheel picker for integer and decimal parts
+- **Common Race Distances**: Quick reference for all standard race distances
+
+### PWA Features
 - **Progressive Web App**: Install to home screen on iOS/Android
 - **Fully Offline**: Works without internet after first load
 - **Custom App Icon**: Matches app design with amber/brown theme
 - **Mobile-First Design**: Responsive layout optimized for mobile devices
 - **Light/Dark Mode**: Automatically adapts to system preferences
-- **Portable**: Single 240KB HTML file with all assets embedded
+- **Portable**: Single ~250KB HTML file with all assets embedded
 
 ## Design
 
@@ -97,10 +105,19 @@ The app will appear on your home screen with a custom icon and work completely o
 
 ## Usage
 
+### Pace Converter
 1. **Set Your Pace**: Use the wheel picker to select minutes and seconds
 2. **Choose Unit**: Toggle between min/km and min/mi
 3. **View Conversions**: See equivalent pace in the other unit
-4. **Check Race Times**: View calculated finish times for common race distances
+4. **Check Race Times**: View calculated finish times for 7 common race distances
+
+### Distance Converter
+1. **Enter Distance**: Use the two-wheel picker for precise distance input (0.01 to 999.99)
+2. **Select Unit**: Toggle between Kilometers and Miles
+3. **View Conversion**: See real-time conversion in the other unit
+4. **Reference Table**: Quick lookup of common race distances in both units
+
+Switch between converters using the bottom navigation bar.
 
 ## PWA Features
 

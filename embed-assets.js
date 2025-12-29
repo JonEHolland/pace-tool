@@ -1,4 +1,15 @@
 import { readFileSync, writeFileSync } from 'fs';
+import { createHash } from 'crypto';
+
+// Generate a unique version hash based on the built content
+function generateBuildHash(htmlContent) {
+  // Hash the built HTML (which contains all bundled JS/CSS)
+  const hash = createHash('sha256')
+    .update(htmlContent)
+    .digest('hex')
+    .substring(0, 8);
+  return `pace-tool-${hash}`;
+}
 
 // Read the assets
 const icon192 = readFileSync('./public/icon-192.png').toString('base64');
@@ -32,37 +43,35 @@ const manifestData = `data:application/json;base64,${Buffer.from(JSON.stringify(
 // Read the built HTML
 let html = readFileSync('./dist/index.html', 'utf-8');
 
-// Replace the references with data URIs
+// STEP 1: Replace all assets EXCEPT the CACHE_NAME
 html = html.replace('href="/icon.svg"', `href="${iconSvgData}"`);
 html = html.replace('href="/icon-192.png"', `href="${icon192Data}"`);
 html = html.replace('href="/icon-512.png"', `href="${icon512Data}"`);
 html = html.replace('href="/manifest.json"', `href="${manifestData}"`);
 
-// Embed the service worker inline
-const swInline = `
+// STEP 2: Remove the service worker registration script from main.tsx (if it exists)
+html = html.replace(/<script>\s*if \('serviceWorker'[\s\S]*?<\/script>/m, '');
+
+// STEP 3: Now hash the HTML with all content embedded (including the SW content for comparison)
+const CACHE_VERSION = generateBuildHash(html + sw);
+console.log(`📦 Building with cache version: ${CACHE_VERSION}`);
+
+// STEP 4: Write the service worker as a separate file with the hash injected
+const swWithHash = sw.replace(/const CACHE_NAME = '[^']+';/g, `const CACHE_NAME = '${CACHE_VERSION}';`);
+writeFileSync('./dist/sw.js', swWithHash);
+
+// STEP 5: Add service worker registration script to HTML
+const swRegistrationScript = `
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          // Register inline service worker
-          const swCode = \`${sw.replace(/`/g, '\\`')}\`;
-          const blob = new Blob([swCode], { type: 'application/javascript' });
-          const swUrl = URL.createObjectURL(blob);
-          
-          navigator.serviceWorker.register(swUrl)
-            .then(reg => {
-              console.log('Service Worker registered');
-              // Cache the current page
-              caches.open('pace-tool-v1').then(cache => {
-                cache.add(window.location.href);
-              });
-            })
-            .catch(err => console.log('Service Worker registration failed:', err));
+          // Use relative path so it works with GitHub Pages subdirectory
+          navigator.serviceWorker.register('./sw.js');
         });
       }
     </script>`;
 
-// Replace the service worker registration
-html = html.replace(/<script>\s*if \('serviceWorker'[\s\S]*?<\/script>/m, swInline);
+html = html.replace('</head>', `${swRegistrationScript}\n  </head>`);
 
 // Write it back
 writeFileSync('./dist/index.html', html);

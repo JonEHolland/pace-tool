@@ -1,8 +1,10 @@
 // Service Worker for offline PWA support
-const CACHE_NAME = 'pace-tool-v1';
+// This will be automatically replaced with a unique hash during build
+const CACHE_NAME = 'pace-tool-dev';
 
 self.addEventListener('install', (event) => {
-  self.skipWaiting();
+  // Don't automatically skip waiting - let the app control when to update
+  // Only skip waiting when user clicks "Update Now"
 });
 
 self.addEventListener('activate', (event) => {
@@ -15,9 +17,23 @@ self.addEventListener('activate', (event) => {
           }
         })
       );
+    }).then(() => {
+      // Notify all clients that activation is complete
+      return self.clients.matchAll().then((clients) => {
+        clients.forEach((client) => {
+          client.postMessage({ type: 'ACTIVATED' });
+        });
+      });
     })
   );
   self.clients.claim();
+});
+
+// Listen for skip waiting message from the app
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
 });
 
 self.addEventListener('fetch', (event) => {

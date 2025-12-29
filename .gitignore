@@ -23,3 +23,14 @@ dist-ssr
 *.sln
 *.sw?
 
+# Development documentation (keep README.md and BUILD.md only)
+*_SUMMARY.md
+*_SYSTEM.md
+*_ARCHITECTURE.md
+*_REFACTOR.md
+*_CLEANUP.md
+*_UPDATES.md
+*_VERIFICATION.md
+*_SUCCESS.md
+*_FEATURE.md
+

@@ -4,6 +4,7 @@ import { AppBar } from './components/AppBar';
 import { PaceConverter } from './components/PaceConverter';
 import { DistanceConverter } from './components/DistanceConverter';
 import { BottomNav } from './components/BottomNav';
+import { UpdateBanner } from './components/UpdateBanner';
 import { useTheme } from './hooks/useTheme';
 
 type Route = 'pace' | 'distance';
@@ -26,6 +27,7 @@ function App() {
 
   return (
     <div className={styles.app}>
+      <UpdateBanner />
       <div className={styles.container}>
         <AppBar theme={theme} onToggleTheme={toggleTheme} />
         {route === 'pace' ? <PaceConverter /> : <DistanceConverter />}
