@@ -1,6 +1,6 @@
 import styles from './PaceInput.module.css';
 import { UnitToggle } from './UnitToggle';
-import { WheelPicker } from './WheelPicker';
+import { WheelPicker, type WheelConfig } from './WheelPicker';
 import { type Unit } from '../utils/paceCalculations';
 
 interface PaceInputProps {
@@ -20,17 +20,31 @@ export function PaceInput({
   onSecondsChange,
   onUnitChange
 }: PaceInputProps) {
+  const leftWheel: WheelConfig = {
+    min: 2,
+    max: 20,
+    value: minutes,
+    onChange: onMinutesChange
+  };
+
+  const rightWheel: WheelConfig = {
+    min: 0,
+    max: 59,
+    value: seconds,
+    onChange: onSecondsChange,
+    padStart: 2
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.unitToggle}>
         <UnitToggle value={unit} onChange={onUnitChange} />
       </div>
       <WheelPicker
-        minutes={minutes}
-        seconds={seconds}
+        leftWheel={leftWheel}
+        rightWheel={rightWheel}
+        separator=":"
         unit={unit}
-        onMinutesChange={onMinutesChange}
-        onSecondsChange={onSecondsChange}
       />
     </div>
   );

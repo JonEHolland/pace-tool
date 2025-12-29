@@ -1,36 +1,41 @@
 import { useRef, useEffect, useCallback, useState } from 'react';
 import styles from './WheelPicker.module.css';
 
+export interface WheelConfig {
+  min: number;           // Minimum value for wheel
+  max: number;           // Maximum value for wheel
+  value: number;         // Current selected value
+  onChange: (value: number) => void;
+  padStart?: number;     // Zero-padding (e.g., 2 for "05")
+}
+
 interface WheelPickerProps {
-  minutes: number;
-  seconds: number;
-  unit: 'km' | 'mi';
-  onMinutesChange: (minutes: number) => void;
-  onSecondsChange: (seconds: number) => void;
-  minMinutes?: number;
-  maxMinutes?: number;
+  leftWheel: WheelConfig;
+  rightWheel: WheelConfig;
+  separator: string;     // "." or ":"
+  unit: 'km' | 'mi';     // For unit change effect
 }
 
 export function WheelPicker({
-  minutes,
-  seconds,
-  unit,
-  onMinutesChange,
-  onSecondsChange,
-  minMinutes = 2,
-  maxMinutes = 20
+  leftWheel,
+  rightWheel,
+  separator,
+  unit
 }: WheelPickerProps) {
-  const minutesRef = useRef<HTMLDivElement>(null);
-  const secondsRef = useRef<HTMLDivElement>(null);
-  const minutesTimeoutRef = useRef<number | null>(null);
-  const secondsTimeoutRef = useRef<number | null>(null);
+  const leftRef = useRef<HTMLDivElement>(null);
+  const rightRef = useRef<HTMLDivElement>(null);
+  const leftTimeoutRef = useRef<number | null>(null);
+  const rightTimeoutRef = useRef<number | null>(null);
   const [handlersEnabled, setHandlersEnabled] = useState(false);
 
-  const minutesArray = Array.from(
-    { length: maxMinutes - minMinutes + 1 },
-    (_, i) => minMinutes + i
+  const leftArray = Array.from(
+    { length: leftWheel.max - leftWheel.min + 1 },
+    (_, i) => leftWheel.min + i
   );
-  const secondsArray = Array.from({ length: 60 }, (_, i) => i);
+  const rightArray = Array.from(
+    { length: rightWheel.max - rightWheel.min + 1 },
+    (_, i) => rightWheel.min + i
+  );
 
   const ITEM_HEIGHT = 40;
 
@@ -52,8 +57,8 @@ export function WheelPicker({
   // Initialize scroll positions - run once on mount
   useEffect(() => {
     const initTimer = setTimeout(() => {
-      scrollToCenter(minutesRef, minutes - minMinutes, false);
-      scrollToCenter(secondsRef, seconds, false);
+      scrollToCenter(leftRef, leftWheel.value - leftWheel.min, false);
+      scrollToCenter(rightRef, rightWheel.value - rightWheel.min, false);
       
       // Enable handlers after initialization
       setTimeout(() => {
@@ -64,100 +69,101 @@ export function WheelPicker({
     return () => clearTimeout(initTimer);
   }, []); // Empty deps - only run on mount
 
-  // Handle minutes scroll
-  const handleMinutesScroll = useCallback(() => {
-    if (!minutesRef.current || !handlersEnabled) return;
+  // Handle left wheel scroll
+  const handleLeftScroll = useCallback(() => {
+    if (!leftRef.current || !handlersEnabled) return;
 
-    if (minutesTimeoutRef.current) {
-      clearTimeout(minutesTimeoutRef.current);
+    if (leftTimeoutRef.current) {
+      clearTimeout(leftTimeoutRef.current);
     }
 
-    minutesTimeoutRef.current = setTimeout(() => {
-      if (!minutesRef.current) return;
+    leftTimeoutRef.current = setTimeout(() => {
+      if (!leftRef.current) return;
       
-      const scrollTop = minutesRef.current.scrollTop;
+      const scrollTop = leftRef.current.scrollTop;
       const index = Math.round(scrollTop / ITEM_HEIGHT);
-      const clampedIndex = Math.max(0, Math.min(index, minutesArray.length - 1));
-      const newMinute = minutesArray[clampedIndex];
+      const clampedIndex = Math.max(0, Math.min(index, leftArray.length - 1));
+      const newValue = leftArray[clampedIndex];
 
-      if (newMinute !== minutes) {
-        onMinutesChange(newMinute);
+      if (newValue !== leftWheel.value) {
+        leftWheel.onChange(newValue);
       }
 
-      scrollToCenter(minutesRef, clampedIndex, true);
+      scrollToCenter(leftRef, clampedIndex, true);
     }, 150);
-  }, [handlersEnabled, minutes, minutesArray, onMinutesChange, scrollToCenter]);
+  }, [handlersEnabled, leftWheel, leftArray, scrollToCenter]);
 
-  // Handle seconds scroll
-  const handleSecondsScroll = useCallback(() => {
-    if (!secondsRef.current || !handlersEnabled) return;
+  // Handle right wheel scroll
+  const handleRightScroll = useCallback(() => {
+    if (!rightRef.current || !handlersEnabled) return;
 
-    if (secondsTimeoutRef.current) {
-      clearTimeout(secondsTimeoutRef.current);
+    if (rightTimeoutRef.current) {
+      clearTimeout(rightTimeoutRef.current);
     }
 
-    secondsTimeoutRef.current = setTimeout(() => {
-      if (!secondsRef.current) return;
+    rightTimeoutRef.current = setTimeout(() => {
+      if (!rightRef.current) return;
       
-      const scrollTop = secondsRef.current.scrollTop;
+      const scrollTop = rightRef.current.scrollTop;
       const index = Math.round(scrollTop / ITEM_HEIGHT);
-      const clampedIndex = Math.max(0, Math.min(index, 59));
+      const clampedIndex = Math.max(0, Math.min(index, rightArray.length - 1));
+      const newValue = rightArray[clampedIndex];
 
-      if (clampedIndex !== seconds) {
-        onSecondsChange(clampedIndex);
+      if (newValue !== rightWheel.value) {
+        rightWheel.onChange(newValue);
       }
 
-      scrollToCenter(secondsRef, clampedIndex, true);
+      scrollToCenter(rightRef, clampedIndex, true);
     }, 150);
-  }, [handlersEnabled, seconds, onSecondsChange, scrollToCenter]);
+  }, [handlersEnabled, rightWheel, rightArray, scrollToCenter]);
 
   // Handle clicks
-  const handleMinuteClick = (minute: number) => {
-    onMinutesChange(minute);
-    scrollToCenter(minutesRef, minute - minMinutes, true);
+  const handleLeftClick = (value: number) => {
+    leftWheel.onChange(value);
+    scrollToCenter(leftRef, value - leftWheel.min, true);
   };
 
-  const handleSecondClick = (second: number) => {
-    onSecondsChange(second);
-    scrollToCenter(secondsRef, second, true);
+  const handleRightClick = (value: number) => {
+    rightWheel.onChange(value);
+    scrollToCenter(rightRef, value - rightWheel.min, true);
   };
 
   // Only update scroll position when unit changes (not on every value change from scrolling!)
   useEffect(() => {
-    if (handlersEnabled && minutesRef.current) {
-      scrollToCenter(minutesRef, minutes - minMinutes, true);
+    if (handlersEnabled && leftRef.current) {
+      scrollToCenter(leftRef, leftWheel.value - leftWheel.min, true);
     }
-    if (handlersEnabled && secondsRef.current) {
-      scrollToCenter(secondsRef, seconds, true);
+    if (handlersEnabled && rightRef.current) {
+      scrollToCenter(rightRef, rightWheel.value - rightWheel.min, true);
     }
   }, [unit]); // Only unit change triggers this!
 
-  const renderMinuteItem = (minute: number) => {
-    const isSelected = minute === minutes;
-    const isNear = Math.abs(minute - minutes) === 1;
+  const renderLeftItem = (value: number) => {
+    const isSelected = value === leftWheel.value;
+    const isNear = Math.abs(value - leftWheel.value) === 1;
     
     return (
       <div
-        key={minute}
+        key={value}
         className={`${styles.wheelItem} ${isSelected ? styles.selected : ''} ${isNear ? styles.near : ''}`}
-        onClick={() => handleMinuteClick(minute)}
+        onClick={() => handleLeftClick(value)}
       >
-        {minute}
+        {leftWheel.padStart ? value.toString().padStart(leftWheel.padStart, '0') : value}
       </div>
     );
   };
 
-  const renderSecondItem = (second: number) => {
-    const isSelected = second === seconds;
-    const isNear = Math.abs(second - seconds) === 1;
+  const renderRightItem = (value: number) => {
+    const isSelected = value === rightWheel.value;
+    const isNear = Math.abs(value - rightWheel.value) === 1;
     
     return (
       <div
-        key={second}
+        key={value}
         className={`${styles.wheelItem} ${isSelected ? styles.selected : ''} ${isNear ? styles.near : ''}`}
-        onClick={() => handleSecondClick(second)}
+        onClick={() => handleRightClick(value)}
       >
-        {second.toString().padStart(2, '0')}
+        {rightWheel.padStart ? value.toString().padStart(rightWheel.padStart, '0') : value}
       </div>
     );
   };
@@ -166,17 +172,17 @@ export function WheelPicker({
     <div className={styles.wheelPicker}>
       <div className={styles.highlight} />
       
-      <div ref={minutesRef} className={styles.wheel} onScroll={handleMinutesScroll}>
+      <div ref={leftRef} className={styles.wheel} onScroll={handleLeftScroll}>
         <div className={styles.wheelInner}>
-          {minutesArray.map(renderMinuteItem)}
+          {leftArray.map(renderLeftItem)}
         </div>
       </div>
 
-      <div className={styles.separator}>:</div>
+      <div className={styles.separator}>{separator}</div>
 
-      <div ref={secondsRef} className={styles.wheel} onScroll={handleSecondsScroll}>
+      <div ref={rightRef} className={styles.wheel} onScroll={handleRightScroll}>
         <div className={styles.wheelInner}>
-          {secondsArray.map(renderSecondItem)}
+          {rightArray.map(renderRightItem)}
         </div>
       </div>
 

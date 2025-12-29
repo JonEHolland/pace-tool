@@ -1,12 +1,16 @@
 // Pace State Management Hook
 
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 import { 
   type Unit, 
   type ConvertedPace,
   convertPace,
   clampPace
 } from '../utils/paceCalculations';
+
+const PACE_MINUTES_STORAGE_KEY = 'pace-tool-pace-minutes';
+const PACE_SECONDS_STORAGE_KEY = 'pace-tool-pace-seconds';
+const PACE_UNIT_STORAGE_KEY = 'pace-tool-pace-unit';
 
 export interface UsePaceStateReturn {
   // Current state
@@ -29,9 +33,48 @@ export function usePaceState(
   initialSeconds: number = 0,
   initialUnit: Unit = 'km'
 ): UsePaceStateReturn {
-  const [paceMinutes, setPaceMinutesState] = useState(initialMinutes);
-  const [paceSeconds, setPaceSecondsState] = useState(initialSeconds);
-  const [unit, setUnitState] = useState<Unit>(initialUnit);
+  // Initialize from localStorage or defaults
+  const [paceMinutes, setPaceMinutesState] = useState(() => {
+    const saved = localStorage.getItem(PACE_MINUTES_STORAGE_KEY);
+    if (saved) {
+      const parsed = parseInt(saved, 10);
+      if (!isNaN(parsed)) {
+        return parsed;
+      }
+    }
+    return initialMinutes;
+  });
+
+  const [paceSeconds, setPaceSecondsState] = useState(() => {
+    const saved = localStorage.getItem(PACE_SECONDS_STORAGE_KEY);
+    if (saved) {
+      const parsed = parseInt(saved, 10);
+      if (!isNaN(parsed)) {
+        return parsed;
+      }
+    }
+    return initialSeconds;
+  });
+
+  const [unit, setUnitState] = useState<Unit>(() => {
+    const saved = localStorage.getItem(PACE_UNIT_STORAGE_KEY);
+    return (saved === 'km' || saved === 'mi') ? saved : initialUnit;
+  });
+
+  // Persist pace minutes to localStorage
+  useEffect(() => {
+    localStorage.setItem(PACE_MINUTES_STORAGE_KEY, paceMinutes.toString());
+  }, [paceMinutes]);
+
+  // Persist pace seconds to localStorage
+  useEffect(() => {
+    localStorage.setItem(PACE_SECONDS_STORAGE_KEY, paceSeconds.toString());
+  }, [paceSeconds]);
+
+  // Persist unit to localStorage
+  useEffect(() => {
+    localStorage.setItem(PACE_UNIT_STORAGE_KEY, unit);
+  }, [unit]);
 
   // Set minutes with clamping
   const setPaceMinutes = useCallback((minutes: number) => {

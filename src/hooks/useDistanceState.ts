@@ -1,12 +1,15 @@
 // Distance State Management Hook
 
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 import { 
   type Unit, 
   type ConvertedDistance,
   convertDistance,
   clampDistance
 } from '../utils/distanceCalculations';
+
+const DISTANCE_STORAGE_KEY = 'pace-tool-distance';
+const DISTANCE_UNIT_STORAGE_KEY = 'pace-tool-distance-unit';
 
 export interface UseDistanceStateReturn {
   // Current state
@@ -26,8 +29,32 @@ export function useDistanceState(
   initialDistance: number = 5.0,
   initialUnit: Unit = 'km'
 ): UseDistanceStateReturn {
-  const [distance, setDistanceState] = useState(clampDistance(initialDistance));
-  const [unit, setUnitState] = useState<Unit>(initialUnit);
+  // Initialize from localStorage or defaults
+  const [distance, setDistanceState] = useState(() => {
+    const saved = localStorage.getItem(DISTANCE_STORAGE_KEY);
+    if (saved) {
+      const parsed = parseFloat(saved);
+      if (!isNaN(parsed)) {
+        return clampDistance(parsed);
+      }
+    }
+    return clampDistance(initialDistance);
+  });
+
+  const [unit, setUnitState] = useState<Unit>(() => {
+    const saved = localStorage.getItem(DISTANCE_UNIT_STORAGE_KEY);
+    return (saved === 'km' || saved === 'mi') ? saved : initialUnit;
+  });
+
+  // Persist distance to localStorage
+  useEffect(() => {
+    localStorage.setItem(DISTANCE_STORAGE_KEY, distance.toString());
+  }, [distance]);
+
+  // Persist unit to localStorage
+  useEffect(() => {
+    localStorage.setItem(DISTANCE_UNIT_STORAGE_KEY, unit);
+  }, [unit]);
 
   // Set distance with clamping
   const setDistance = useCallback((value: number) => {
