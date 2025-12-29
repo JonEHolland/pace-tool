@@ -7,6 +7,7 @@ import {
   convertPace,
   clampPace
 } from '../utils/paceCalculations';
+import { browserStorage, type StorageFacade } from '../utils/storage';
 
 const PACE_MINUTES_STORAGE_KEY = 'pace-tool-pace-minutes';
 const PACE_SECONDS_STORAGE_KEY = 'pace-tool-pace-seconds';
@@ -31,74 +32,106 @@ export interface UsePaceStateReturn {
 export function usePaceState(
   initialMinutes: number = 5,
   initialSeconds: number = 0,
-  initialUnit: Unit = 'km'
+  initialUnit: Unit = 'km',
+  storage: StorageFacade = browserStorage
 ): UsePaceStateReturn {
-  // Initialize from localStorage or defaults
-  const [paceMinutes, setPaceMinutesState] = useState(() => {
-    const saved = localStorage.getItem(PACE_MINUTES_STORAGE_KEY);
-    if (saved) {
-      const parsed = parseInt(saved, 10);
-      if (!isNaN(parsed)) {
-        return parsed;
+  // Store canonical pace in seconds per km to prevent rounding errors
+  const [paceSecondsPerKm, setPaceSecondsPerKm] = useState(() => {
+    const savedMinutes = storage.getItem(PACE_MINUTES_STORAGE_KEY);
+    const savedSeconds = storage.getItem(PACE_SECONDS_STORAGE_KEY);
+    const savedUnit = storage.getItem(PACE_UNIT_STORAGE_KEY);
+    
+    if (savedMinutes && savedSeconds) {
+      const minutes = parseInt(savedMinutes, 10);
+      const seconds = parseInt(savedSeconds, 10);
+      
+      if (!isNaN(minutes) && !isNaN(seconds)) {
+        const totalSeconds = minutes * 60 + seconds;
+        // Convert to seconds per km if stored in miles
+        if (savedUnit === 'mi') {
+          return totalSeconds / 1.60934; // MILES_TO_KM
+        }
+        return totalSeconds;
       }
     }
-    return initialMinutes;
-  });
-
-  const [paceSeconds, setPaceSecondsState] = useState(() => {
-    const saved = localStorage.getItem(PACE_SECONDS_STORAGE_KEY);
-    if (saved) {
-      const parsed = parseInt(saved, 10);
-      if (!isNaN(parsed)) {
-        return parsed;
-      }
+    
+    // Convert initial value to seconds per km
+    const totalSeconds = initialMinutes * 60 + initialSeconds;
+    if (initialUnit === 'mi') {
+      return totalSeconds / 1.60934;
     }
-    return initialSeconds;
+    return totalSeconds;
   });
 
   const [unit, setUnitState] = useState<Unit>(() => {
-    const saved = localStorage.getItem(PACE_UNIT_STORAGE_KEY);
+    const saved = storage.getItem(PACE_UNIT_STORAGE_KEY);
     return (saved === 'km' || saved === 'mi') ? saved : initialUnit;
   });
 
-  // Persist pace minutes to localStorage
-  useEffect(() => {
-    localStorage.setItem(PACE_MINUTES_STORAGE_KEY, paceMinutes.toString());
-  }, [paceMinutes]);
+  // Calculate display pace from canonical seconds per km
+  const { paceMinutes, paceSeconds } = useMemo(() => {
+    let displaySeconds = paceSecondsPerKm;
+    
+    // Convert to miles if needed
+    if (unit === 'mi') {
+      displaySeconds = paceSecondsPerKm * 1.60934; // MILES_TO_KM
+    }
+    
+    // Round to nearest second
+    const rounded = Math.round(displaySeconds);
+    
+    return {
+      paceMinutes: Math.floor(rounded / 60),
+      paceSeconds: rounded % 60
+    };
+  }, [paceSecondsPerKm, unit]);
 
-  // Persist pace seconds to localStorage
+  // Persist pace to storage (in current unit for compatibility)
   useEffect(() => {
-    localStorage.setItem(PACE_SECONDS_STORAGE_KEY, paceSeconds.toString());
-  }, [paceSeconds]);
+    storage.setItem(PACE_MINUTES_STORAGE_KEY, paceMinutes.toString());
+  }, [paceMinutes, storage]);
 
-  // Persist unit to localStorage
   useEffect(() => {
-    localStorage.setItem(PACE_UNIT_STORAGE_KEY, unit);
-  }, [unit]);
+    storage.setItem(PACE_SECONDS_STORAGE_KEY, paceSeconds.toString());
+  }, [paceSeconds, storage]);
 
-  // Set minutes with clamping
+  // Persist unit to storage
+  useEffect(() => {
+    storage.setItem(PACE_UNIT_STORAGE_KEY, unit);
+  }, [unit, storage]);
+
+  // Set minutes with clamping (converts to seconds per km for storage)
   const setPaceMinutes = useCallback((minutes: number) => {
     const clamped = clampPace(minutes, paceSeconds);
-    setPaceMinutesState(clamped.minutes);
-    setPaceSecondsState(clamped.seconds);
-  }, [paceSeconds]);
+    const totalSeconds = clamped.minutes * 60 + clamped.seconds;
+    
+    if (unit === 'km') {
+      setPaceSecondsPerKm(totalSeconds);
+    } else {
+      // Convert miles to km for canonical storage
+      setPaceSecondsPerKm(totalSeconds / 1.60934);
+    }
+  }, [paceSeconds, unit]);
 
-  // Set seconds with clamping
+  // Set seconds with clamping (converts to seconds per km for storage)
   const setPaceSeconds = useCallback((seconds: number) => {
     const clamped = clampPace(paceMinutes, seconds);
-    setPaceMinutesState(clamped.minutes);
-    setPaceSecondsState(clamped.seconds);
-  }, [paceMinutes]);
+    const totalSeconds = clamped.minutes * 60 + clamped.seconds;
+    
+    if (unit === 'km') {
+      setPaceSecondsPerKm(totalSeconds);
+    } else {
+      // Convert miles to km for canonical storage
+      setPaceSecondsPerKm(totalSeconds / 1.60934);
+    }
+  }, [paceMinutes, unit]);
 
-  // Switch unit (maintains same speed, converts pace)
+  // Switch unit (maintains same speed by keeping canonical seconds per km)
   const setUnit = useCallback((newUnit: Unit) => {
     if (newUnit === unit) return;
-    
-    const converted = convertPace(paceMinutes, paceSeconds, unit, newUnit);
-    setPaceMinutesState(converted.minutes);
-    setPaceSecondsState(converted.seconds);
+    // Just switch the unit - paceSecondsPerKm stays the same!
     setUnitState(newUnit);
-  }, [paceMinutes, paceSeconds, unit]);
+  }, [unit]);
 
   // Computed values
   const convertedUnit: Unit = unit === 'km' ? 'mi' : 'km';

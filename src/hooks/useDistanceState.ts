@@ -7,6 +7,7 @@ import {
   convertDistance,
   clampDistance
 } from '../utils/distanceCalculations';
+import { browserStorage, type StorageFacade } from '../utils/storage';
 
 const DISTANCE_STORAGE_KEY = 'pace-tool-distance';
 const DISTANCE_UNIT_STORAGE_KEY = 'pace-tool-distance-unit';
@@ -27,49 +28,75 @@ export interface UseDistanceStateReturn {
 
 export function useDistanceState(
   initialDistance: number = 5.0,
-  initialUnit: Unit = 'km'
+  initialUnit: Unit = 'km',
+  storage: StorageFacade = browserStorage
 ): UseDistanceStateReturn {
-  // Initialize from localStorage or defaults
-  const [distance, setDistanceState] = useState(() => {
-    const saved = localStorage.getItem(DISTANCE_STORAGE_KEY);
+  // Store canonical value in km to prevent rounding errors on unit switches
+  const [distanceInKm, setDistanceInKm] = useState(() => {
+    const saved = storage.getItem(DISTANCE_STORAGE_KEY);
+    const savedUnit = storage.getItem(DISTANCE_UNIT_STORAGE_KEY);
+    
     if (saved) {
       const parsed = parseFloat(saved);
       if (!isNaN(parsed)) {
-        return clampDistance(parsed);
+        const clamped = clampDistance(parsed);
+        // Convert to km if stored value was in miles
+        if (savedUnit === 'mi') {
+          return convertDistance(clamped, 'mi', 'km').value;
+        }
+        return clamped;
       }
     }
-    return clampDistance(initialDistance);
+    
+    // Convert initial value to km if needed
+    const clamped = clampDistance(initialDistance);
+    if (initialUnit === 'mi') {
+      return convertDistance(clamped, 'mi', 'km').value;
+    }
+    return clamped;
   });
 
   const [unit, setUnitState] = useState<Unit>(() => {
-    const saved = localStorage.getItem(DISTANCE_UNIT_STORAGE_KEY);
+    const saved = storage.getItem(DISTANCE_UNIT_STORAGE_KEY);
     return (saved === 'km' || saved === 'mi') ? saved : initialUnit;
   });
 
-  // Persist distance to localStorage
-  useEffect(() => {
-    localStorage.setItem(DISTANCE_STORAGE_KEY, distance.toString());
-  }, [distance]);
+  // Calculate display distance from canonical km value
+  const distance = useMemo(() => {
+    if (unit === 'km') {
+      return distanceInKm;
+    }
+    return convertDistance(distanceInKm, 'km', 'mi').value;
+  }, [distanceInKm, unit]);
 
-  // Persist unit to localStorage
+  // Persist distance to storage (in current unit for compatibility)
   useEffect(() => {
-    localStorage.setItem(DISTANCE_UNIT_STORAGE_KEY, unit);
-  }, [unit]);
+    storage.setItem(DISTANCE_STORAGE_KEY, distance.toString());
+  }, [distance, storage]);
 
-  // Set distance with clamping
+  // Persist unit to storage
+  useEffect(() => {
+    storage.setItem(DISTANCE_UNIT_STORAGE_KEY, unit);
+  }, [unit, storage]);
+
+  // Set distance with clamping (converts to km for storage)
   const setDistance = useCallback((value: number) => {
     const clamped = clampDistance(value);
-    setDistanceState(clamped);
-  }, []);
+    if (unit === 'km') {
+      setDistanceInKm(clamped);
+    } else {
+      // Convert miles to km for canonical storage
+      const inKm = convertDistance(clamped, 'mi', 'km').value;
+      setDistanceInKm(inKm);
+    }
+  }, [unit]);
 
-  // Switch unit (maintains same physical distance, converts the value)
+  // Switch unit (maintains same physical distance by keeping canonical km value)
   const setUnit = useCallback((newUnit: Unit) => {
     if (newUnit === unit) return;
-    
-    const converted = convertDistance(distance, unit, newUnit);
-    setDistanceState(converted.value);
+    // Just switch the unit - distanceInKm stays the same!
     setUnitState(newUnit);
-  }, [distance, unit]);
+  }, [unit]);
 
   // Computed values
   const convertedUnit: Unit = unit === 'km' ? 'mi' : 'km';
