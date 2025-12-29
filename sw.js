@@ -1,6 +1,6 @@
 // Service Worker for offline PWA support
 // This will be automatically replaced with a unique hash during build
-const CACHE_NAME = 'pace-tool-6d7dba59';
+const CACHE_NAME = 'pace-tool-29e53a20';
 
 console.log('[SW] Service worker loaded with cache:', CACHE_NAME);
 
