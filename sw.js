@@ -1,9 +1,10 @@
 // Service Worker for offline PWA support
-const CACHE_NAME = 'pace-tool-v4'; // Increment this for each deployment
+const CACHE_NAME = 'pace-tool-v5'; // Increment this for each deployment
 
 self.addEventListener('install', (event) => {
   // Don't automatically skip waiting - let the app control when to update
-  self.skipWaiting();
+  // Only skip waiting when user clicks "Update Now"
+  console.log('[SW] Installing new service worker...');
 });
 
 self.addEventListener('activate', (event) => {
