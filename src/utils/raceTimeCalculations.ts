@@ -4,14 +4,17 @@ export interface RaceDistance {
   id: string;
   label: string;
   distanceKm: number;
-  distanceNote: string;
+  distanceMi: number;
 }
 
 export const RACE_DISTANCES: RaceDistance[] = [
-  { id: '5k', label: '5K', distanceKm: 5.0, distanceNote: '5.00 km' },
-  { id: '10k', label: '10K', distanceKm: 10.0, distanceNote: '10.00 km' },
-  { id: 'half', label: 'Half', distanceKm: 21.0975, distanceNote: '21.10 km' },
-  { id: 'full', label: 'Marathon', distanceKm: 42.195, distanceNote: '42.20 km' }
+  { id: '5k', label: '5K', distanceKm: 5.0, distanceMi: 3.11 },
+  { id: '10k', label: '10K', distanceKm: 10.0, distanceMi: 6.21 },
+  { id: '15k', label: '15K', distanceKm: 15.0, distanceMi: 9.32 },
+  { id: '10mi', label: '10 Mile', distanceKm: 16.09, distanceMi: 10.0 },
+  { id: 'half', label: 'Half Marathon', distanceKm: 21.0975, distanceMi: 13.11 },
+  { id: 'full', label: 'Marathon', distanceKm: 42.195, distanceMi: 26.22 },
+  { id: '50k', label: '50K', distanceKm: 50.0, distanceMi: 31.07 }
 ];
 
 /**

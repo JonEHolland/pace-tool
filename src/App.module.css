@@ -13,7 +13,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding-bottom: 24px;
+  padding-bottom: 84px;
 }
 
 @media (min-width: 768px) {

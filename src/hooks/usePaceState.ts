@@ -4,19 +4,9 @@ import { useState, useCallback, useMemo } from 'react';
 import { 
   type Unit, 
   type ConvertedPace,
-  convertPace, 
-  paceToSecondsPerKm,
-  formatPace,
-  clampPace,
-  addSecondsToPace
+  convertPace,
+  clampPace
 } from '../utils/paceCalculations';
-import { calculateAllRaceTimes } from '../utils/raceTimeCalculations';
-
-export interface PaceState {
-  minutes: number;
-  seconds: number;
-  unit: Unit;
-}
 
 export interface UsePaceStateReturn {
   // Current state
@@ -24,22 +14,14 @@ export interface UsePaceStateReturn {
   paceSeconds: number;
   unit: Unit;
   
-  // Formatted values
-  currentPaceFormatted: string;
+  // Converted values
   convertedPace: ConvertedPace;
-  convertedPaceFormatted: string;
   convertedUnit: Unit;
-  
-  // Derived values
-  paceSecondsPerKm: number;
-  raceTimes: Record<string, string>;
   
   // Actions
   setPaceMinutes: (minutes: number) => void;
   setPaceSeconds: (seconds: number) => void;
   setUnit: (unit: Unit) => void;
-  setPace: (minutes: number, seconds: number) => void;
-  adjustPaceBySeconds: (deltaSeconds: number) => void;
 }
 
 export function usePaceState(
@@ -65,20 +47,6 @@ export function usePaceState(
     setPaceSecondsState(clamped.seconds);
   }, [paceMinutes]);
 
-  // Set both minutes and seconds
-  const setPace = useCallback((minutes: number, seconds: number) => {
-    const clamped = clampPace(minutes, seconds);
-    setPaceMinutesState(clamped.minutes);
-    setPaceSecondsState(clamped.seconds);
-  }, []);
-
-  // Adjust pace by adding/subtracting seconds
-  const adjustPaceBySeconds = useCallback((deltaSeconds: number) => {
-    const newPace = addSecondsToPace(paceMinutes, paceSeconds, deltaSeconds);
-    setPaceMinutesState(newPace.minutes);
-    setPaceSecondsState(newPace.seconds);
-  }, [paceMinutes, paceSeconds]);
-
   // Switch unit (maintains same speed, converts pace)
   const setUnit = useCallback((newUnit: Unit) => {
     if (newUnit === unit) return;
@@ -90,11 +58,6 @@ export function usePaceState(
   }, [paceMinutes, paceSeconds, unit]);
 
   // Computed values
-  const currentPaceFormatted = useMemo(
-    () => formatPace(paceMinutes, paceSeconds),
-    [paceMinutes, paceSeconds]
-  );
-
   const convertedUnit: Unit = unit === 'km' ? 'mi' : 'km';
 
   const convertedPace = useMemo(
@@ -102,36 +65,15 @@ export function usePaceState(
     [paceMinutes, paceSeconds, unit, convertedUnit]
   );
 
-  const convertedPaceFormatted = useMemo(
-    () => formatPace(convertedPace.minutes, convertedPace.seconds),
-    [convertedPace]
-  );
-
-  const paceSecondsPerKm = useMemo(
-    () => paceToSecondsPerKm(paceMinutes, paceSeconds, unit),
-    [paceMinutes, paceSeconds, unit]
-  );
-
-  const raceTimes = useMemo(
-    () => calculateAllRaceTimes(paceSecondsPerKm),
-    [paceSecondsPerKm]
-  );
-
   return {
     paceMinutes,
     paceSeconds,
     unit,
-    currentPaceFormatted,
     convertedPace,
-    convertedPaceFormatted,
     convertedUnit,
-    paceSecondsPerKm,
-    raceTimes,
     setPaceMinutes,
     setPaceSeconds,
-    setUnit,
-    setPace,
-    adjustPaceBySeconds
+    setUnit
   };
 }
 

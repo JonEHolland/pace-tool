@@ -2,12 +2,6 @@
 
 export type Unit = 'km' | 'mi';
 
-export interface Pace {
-  minutes: number;
-  seconds: number;
-  unit: Unit;
-}
-
 export interface ConvertedPace {
   minutes: number;
   seconds: number;
@@ -57,14 +51,6 @@ export function paceToSecondsPerKm(
 }
 
 /**
- * Format pace as M:SS string
- */
-export function formatPace(minutes: number, seconds: number): string {
-  const sec = seconds.toString().padStart(2, '0');
-  return `${minutes}:${sec}`;
-}
-
-/**
  * Clamp pace values to valid range
  */
 export function clampPace(minutes: number, seconds: number): ConvertedPace {
@@ -80,17 +66,5 @@ export function clampPace(minutes: number, seconds: number): ConvertedPace {
     minutes: Math.floor(totalSeconds / 60),
     seconds: totalSeconds % 60
   };
-}
-
-/**
- * Add seconds to a pace, with clamping
- */
-export function addSecondsToPace(
-  minutes: number,
-  seconds: number,
-  deltaSeconds: number
-): ConvertedPace {
-  const totalSeconds = minutes * 60 + seconds + deltaSeconds;
-  return clampPace(Math.floor(totalSeconds / 60), totalSeconds % 60);
 }
 

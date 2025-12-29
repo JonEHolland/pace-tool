@@ -1,0 +1,129 @@
+.container {
+  background: var(--secondary-800);
+  border-radius: var(--radius-card);
+  margin: 0 var(--spacing-screen-x) var(--spacing-section-gap);
+  overflow: hidden;
+  position: relative;
+}
+
+@media (prefers-color-scheme: dark) {
+  .container {
+    background: var(--secondary-900);
+  }
+}
+
+:root[data-theme="dark"] .container {
+  background: var(--secondary-900);
+}
+
+.header {
+  height: 54px;
+  padding: 0 var(--spacing-card);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: var(--divider-thickness) solid rgba(255, 255, 255, 0.12);
+  background: inherit;
+}
+
+.title {
+  font-size: var(--size-h2);
+  line-height: var(--line-h2);
+  letter-spacing: var(--tracking-h2);
+  font-weight: var(--weight-bold);
+  color: var(--primary-300);
+}
+
+.table {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--spacing-card);
+  border-bottom: var(--divider-thickness) solid rgba(255, 255, 255, 0.10);
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.raceName {
+  font-size: 18px;
+  font-weight: var(--weight-black);
+  color: var(--primary-300);
+  min-width: 120px;
+}
+
+.raceInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.raceDistance {
+  font-size: var(--size-caption);
+  line-height: var(--line-caption);
+  letter-spacing: var(--tracking-caption);
+  font-weight: var(--weight-medium);
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.timeInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.time {
+  font-size: 22px;
+  font-weight: var(--weight-black);
+  letter-spacing: -0.01em;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.timeLabel {
+  font-size: var(--size-caption);
+  line-height: var(--line-caption);
+  letter-spacing: var(--tracking-caption);
+  font-weight: var(--weight-medium);
+  color: rgba(255, 255, 255, 0.65);
+}
+
+/* Distance display styles */
+.distances {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.distance {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.value {
+  font-size: 18px;
+  font-weight: var(--weight-black);
+  letter-spacing: -0.01em;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.unit {
+  font-size: var(--size-caption);
+  font-weight: var(--weight-medium);
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.separator {
+  font-size: 16px;
+  font-weight: var(--weight-medium);
+  color: rgba(255, 255, 255, 0.65);
+  padding: 0 4px;
+}

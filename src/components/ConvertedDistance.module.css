@@ -1,0 +1,52 @@
+.container {
+  background: var(--surface-alt);
+  border-radius: var(--radius-card);
+  padding: var(--spacing-card);
+  border: var(--divider-thickness) solid var(--divider);
+  margin: 0 var(--spacing-screen-x) var(--spacing-section-gap);
+}
+
+.label {
+  font-size: var(--size-label);
+  line-height: var(--line-label);
+  letter-spacing: var(--tracking-label);
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.distanceRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.distance {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.value {
+  font-size: 28px;
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  font-weight: var(--weight-black);
+  color: var(--text-primary);
+}
+
+.unit {
+  font-size: 14px;
+  font-weight: var(--weight-medium);
+  color: var(--text-secondary);
+}
+
+.equals {
+  font-size: 20px;
+  font-weight: var(--weight-bold);
+  color: var(--text-secondary);
+}
+

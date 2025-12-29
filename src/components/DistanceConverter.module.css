@@ -1,0 +1,32 @@
+.page {
+  width: 100%;
+}
+
+.header {
+  padding: 0 var(--spacing-screen-x);
+  margin-bottom: var(--spacing-section-gap);
+}
+
+.title {
+  font-size: var(--size-display);
+  line-height: var(--line-display);
+  letter-spacing: var(--tracking-display);
+  font-weight: var(--weight-black);
+  color: var(--text-primary);
+  white-space: pre-line;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  font-size: var(--size-body);
+  line-height: 1.2;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 400px) {
+  .title {
+    font-size: 42px;
+  }
+}
+
