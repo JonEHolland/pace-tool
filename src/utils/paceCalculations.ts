@@ -1,15 +1,14 @@
 // Pace Calculations Utility
 
-export type Unit = 'km' | 'mi';
+import { KM_TO_MILES, MILES_TO_KM, type Unit } from './constants';
+
+// Re-export Unit from constants for backwards compatibility
+export type { Unit } from './constants';
 
 export interface ConvertedPace {
   minutes: number;
   seconds: number;
 }
-
-// Conversion constants
-const KM_TO_MILES = 0.621371;
-const MILES_TO_KM = 1.60934;
 
 /**
  * Convert pace from one unit to another

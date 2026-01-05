@@ -7,6 +7,7 @@ import {
   convertPace,
   clampPace
 } from '../utils/paceCalculations';
+import { MILES_TO_KM } from '../utils/constants';
 import { browserStorage, type StorageFacade } from '../utils/storage';
 
 const PACE_MINUTES_STORAGE_KEY = 'pace-tool-pace-minutes';
@@ -49,7 +50,7 @@ export function usePaceState(
         const totalSeconds = minutes * 60 + seconds;
         // Convert to seconds per km if stored in miles
         if (savedUnit === 'mi') {
-          return totalSeconds / 1.60934; // MILES_TO_KM
+          return totalSeconds / MILES_TO_KM;
         }
         return totalSeconds;
       }
@@ -58,7 +59,7 @@ export function usePaceState(
     // Convert initial value to seconds per km
     const totalSeconds = initialMinutes * 60 + initialSeconds;
     if (initialUnit === 'mi') {
-      return totalSeconds / 1.60934;
+      return totalSeconds / MILES_TO_KM;
     }
     return totalSeconds;
   });
@@ -74,7 +75,7 @@ export function usePaceState(
     
     // Convert to miles if needed
     if (unit === 'mi') {
-      displaySeconds = paceSecondsPerKm * 1.60934; // MILES_TO_KM
+      displaySeconds = paceSecondsPerKm * MILES_TO_KM;
     }
     
     // Round to nearest second
@@ -109,7 +110,7 @@ export function usePaceState(
       setPaceSecondsPerKm(totalSeconds);
     } else {
       // Convert miles to km for canonical storage
-      setPaceSecondsPerKm(totalSeconds / 1.60934);
+      setPaceSecondsPerKm(totalSeconds / MILES_TO_KM);
     }
   }, [paceSeconds, unit]);
 
@@ -122,7 +123,7 @@ export function usePaceState(
       setPaceSecondsPerKm(totalSeconds);
     } else {
       // Convert miles to km for canonical storage
-      setPaceSecondsPerKm(totalSeconds / 1.60934);
+      setPaceSecondsPerKm(totalSeconds / MILES_TO_KM);
     }
   }, [paceMinutes, unit]);
 

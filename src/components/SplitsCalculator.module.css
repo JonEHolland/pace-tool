@@ -1,0 +1,9 @@
+.page {
+  composes: page from '../styles/shared.module.css';
+}
+
+.unitToggleWrapper {
+  display: flex;
+  justify-content: center;
+  margin: 0 var(--spacing-screen-x) var(--spacing-section-gap);
+}

@@ -1,0 +1,56 @@
+.container {
+  margin: 0 var(--spacing-screen-x) var(--spacing-section-gap);
+}
+
+.scrollContainer {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 4px 0 12px 0;
+}
+
+.scrollContainer::-webkit-scrollbar {
+  display: none;
+}
+
+.pill {
+  flex-shrink: 0;
+  padding: 10px 20px;
+  border: 2px solid var(--divider);
+  border-radius: 100px;
+  background: var(--surface);
+  color: var(--text-secondary);
+  font-size: var(--size-body);
+  font-weight: var(--weight-medium);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  scroll-snap-align: start;
+  white-space: nowrap;
+}
+
+.pill:hover {
+  border-color: var(--primary-300);
+  color: var(--text-primary);
+  background: rgba(0, 0, 0, 0.02);
+}
+
+@media (prefers-color-scheme: dark) {
+  .pill:hover {
+    background: rgba(255, 255, 255, 0.03);
+  }
+}
+
+.pill.active {
+  background: var(--primary-300);
+  border-color: var(--primary-300);
+  color: var(--secondary-800);
+  font-weight: var(--weight-bold);
+}
+
+.pill:active {
+  transform: scale(0.98);
+}
+

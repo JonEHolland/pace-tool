@@ -37,6 +37,7 @@
 
   /* Accents */
   --shadow-soft: rgba(0, 0, 0, 0.18);
+  --shadow-medium: rgba(0, 0, 0, 0.22);
   --shadow-hard: rgba(0, 0, 0, 0.28);
   --scrim: rgba(0, 0, 0, 0.22);
   --glass: rgba(255, 255, 255, 0.10);
@@ -77,6 +78,24 @@
   --line-caption: 1.20;
   --tracking-caption: 0.00em;
 
+  --size-small: 13px;
+  --line-small: 1.25;
+  --tracking-small: 0.00em;
+
+  --size-value: 28px;
+  --line-value: 0.98;
+  --tracking-value: -0.02em;
+
+  --size-value-lg: 34px;
+  --size-value-sm: 18px;
+
+  /* Font Weights */
+  --weight-semibold: 600;
+
+  /* Transitions */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+
   /* Layout */
   --radius-screen: 28px;
   --radius-card: 18px;
@@ -96,6 +115,7 @@
   --surface-alt: var(--gray-100);
   --text-primary: var(--secondary-800);
   --text-secondary: rgba(0, 0, 0, 0.55);
+  --text-tertiary: rgba(0, 0, 0, 0.40);
   --text-on-primary: var(--secondary-800);
   --accent: var(--primary-300);
   --divider: var(--divider-light);
@@ -108,6 +128,7 @@
   --surface-alt: var(--secondary-900);
   --text-primary: var(--primary-300);
   --text-secondary: rgba(255, 255, 255, 0.70);
+  --text-tertiary: rgba(255, 255, 255, 0.50);
   --text-on-primary: var(--secondary-800);
   --accent: var(--primary-300);
   --divider: var(--divider-dark);
@@ -121,6 +142,7 @@
     --surface-alt: var(--secondary-900);
     --text-primary: var(--primary-300);
     --text-secondary: rgba(255, 255, 255, 0.70);
+    --text-tertiary: rgba(255, 255, 255, 0.50);
     --text-on-primary: var(--secondary-800);
     --accent: var(--primary-300);
     --divider: var(--divider-dark);
