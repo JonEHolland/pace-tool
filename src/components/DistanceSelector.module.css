@@ -1,15 +1,16 @@
 .container {
   margin: 0 var(--spacing-screen-x) var(--spacing-section-gap);
+  position: relative;
 }
 
 .scrollContainer {
   display: flex;
   gap: 8px;
   overflow-x: auto;
-  scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   padding: 4px 0 12px 0;
+  scroll-behavior: smooth;
 }
 
 .scrollContainer::-webkit-scrollbar {
@@ -27,20 +28,23 @@
   font-weight: var(--weight-medium);
   cursor: pointer;
   transition: all var(--transition-normal);
-  scroll-snap-align: start;
   white-space: nowrap;
 }
 
-.pill:hover {
+.pill:not(.active):hover {
   border-color: var(--primary-300);
   color: var(--text-primary);
   background: rgba(0, 0, 0, 0.02);
 }
 
 @media (prefers-color-scheme: dark) {
-  .pill:hover {
+  .pill:not(.active):hover {
     background: rgba(255, 255, 255, 0.03);
   }
+}
+
+:root[data-theme="dark"] .pill:not(.active):hover {
+  background: rgba(255, 255, 255, 0.03);
 }
 
 .pill.active {
@@ -54,3 +58,28 @@
   transform: scale(0.98);
 }
 
+/* Fade indicators for scroll overflow */
+.fade {
+  position: absolute;
+  top: 0;
+  bottom: 12px; /* Match scrollContainer bottom padding */
+  width: 40px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--transition-normal);
+  z-index: 1;
+}
+
+.fade.visible {
+  opacity: 1;
+}
+
+.fadeLeft {
+  left: 0;
+  background: linear-gradient(to right, var(--bg) 0%, transparent 100%);
+}
+
+.fadeRight {
+  right: 0;
+  background: linear-gradient(to left, var(--bg) 0%, transparent 100%);
+}
