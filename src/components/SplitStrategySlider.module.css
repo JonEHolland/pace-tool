@@ -83,3 +83,41 @@
   color: var(--text-tertiary);
   font-weight: var(--weight-medium);
 }
+
+/* Pace range display */
+.paceRange {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: var(--divider-thickness) solid var(--divider);
+}
+
+.paceItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.paceLabel {
+  font-size: var(--size-caption);
+  font-weight: var(--weight-medium);
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.paceValue {
+  font-size: var(--size-body);
+  font-weight: var(--weight-bold);
+  color: var(--text-primary);
+}
+
+.paceSeparator {
+  font-size: var(--size-body);
+  color: var(--text-tertiary);
+  padding: 0 4px;
+}

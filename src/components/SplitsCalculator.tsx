@@ -48,6 +48,8 @@ export function SplitsCalculator() {
       <SplitStrategySlider
         value={splitPercent}
         onChange={setSplitPercent}
+        splits={splits}
+        unit={unit}
       />
 
       <div className={styles.unitToggleWrapper}>
