@@ -1,6 +1,6 @@
 // Service Worker for offline PWA support
 // This will be automatically replaced with a unique hash during build
-const CACHE_NAME = 'pace-tool-8808a97b';
+const CACHE_NAME = 'pace-tool-c6102d21';
 
 self.addEventListener('install', (event) => {
   // Don't automatically skip waiting - let the app control when to update
