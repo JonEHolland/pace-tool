@@ -1,6 +1,6 @@
 import styles from './BottomNav.module.css';
 
-type Route = 'pace' | 'distance';
+type Route = 'pace' | 'distance' | 'splits';
 
 interface BottomNavProps {
   activeRoute: Route;
@@ -32,6 +32,19 @@ function DistanceIcon() {
   );
 }
 
+function SplitsIcon() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M3 6H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+      <path d="M3 12H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+      <path d="M3 18H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+      <circle cx="7" cy="6" r="1.5" fill="currentColor"/>
+      <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
+      <circle cx="17" cy="18" r="1.5" fill="currentColor"/>
+    </svg>
+  );
+}
+
 export function BottomNav({ activeRoute, onRouteChange }: BottomNavProps) {
   return (
     <nav className={styles.nav}>
@@ -52,6 +65,15 @@ export function BottomNav({ activeRoute, onRouteChange }: BottomNavProps) {
       >
         <DistanceIcon />
         <span className={styles.label}>Distance</span>
+      </button>
+      <button
+        className={`${styles.navItem} ${activeRoute === 'splits' ? styles.active : ''}`}
+        onClick={() => onRouteChange('splits')}
+        aria-label="Splits Calculator"
+        aria-current={activeRoute === 'splits' ? 'page' : undefined}
+      >
+        <SplitsIcon />
+        <span className={styles.label}>Splits</span>
       </button>
     </nav>
   );

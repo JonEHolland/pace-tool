@@ -1,10 +1,15 @@
 import styles from './Header.module.css';
 
-export function Header() {
+interface HeaderProps {
+  title?: string;
+  subtitle?: string;
+}
+
+export function Header({ title = 'Pace\nConverter', subtitle = 'Convert pace between kilometers and miles' }: HeaderProps = {}) {
   return (
     <div className={styles.header}>
-      <h1 className={styles.title}>Pace{'\n'}Converter</h1>
-      <p className={styles.subtitle}>Convert pace between kilometers and miles</p>
+      <h1 className={styles.title}>{title}</h1>
+      <p className={styles.subtitle}>{subtitle}</p>
     </div>
   );
 }

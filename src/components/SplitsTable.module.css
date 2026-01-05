@@ -1,0 +1,80 @@
+.container {
+  composes: cardDark from '../styles/shared.module.css';
+}
+
+.header {
+  composes: cardDarkHeader from '../styles/shared.module.css';
+}
+
+.title {
+  composes: cardDarkTitle from '../styles/shared.module.css';
+}
+
+.empty {
+  text-align: center;
+  padding: 32px var(--spacing-card);
+  color: rgba(255, 255, 255, 0.65);
+  font-size: var(--size-body);
+}
+
+.tableWrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.headerRow {
+  border-bottom: var(--divider-thickness) solid rgba(255, 255, 255, 0.12);
+}
+
+.headerCell {
+  padding: 12px var(--spacing-card);
+  text-align: left;
+  font-size: var(--size-caption);
+  font-weight: var(--weight-bold);
+  color: var(--primary-300);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.headerCell:first-child {
+  width: 40px;
+}
+
+.row {
+  border-bottom: var(--divider-thickness) solid rgba(255, 255, 255, 0.10);
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.cell {
+  padding: 16px var(--spacing-card);
+  font-size: var(--size-body);
+  font-weight: var(--weight-medium);
+  color: rgba(255, 255, 255, 0.92);
+  white-space: nowrap;
+}
+
+.cellPace {
+  padding: 16px var(--spacing-card);
+  font-size: var(--size-body);
+  font-weight: var(--weight-black);
+  color: var(--primary-300);
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .headerCell,
+  .cell,
+  .cellPace {
+    padding: 12px 12px;
+    font-size: var(--size-caption);
+  }
+}
