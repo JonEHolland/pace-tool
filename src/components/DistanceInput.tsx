@@ -30,20 +30,21 @@ export function DistanceInput({
     onDistanceChange(newDistance);
   };
 
-  const leftWheel: WheelConfig = {
-    min: 0,
-    max: 999,
-    value: integerPart,
-    onChange: handleIntegerChange
-  };
-
-  const rightWheel: WheelConfig = {
-    min: 0,
-    max: 99,
-    value: decimalPart,
-    onChange: handleDecimalChange,
-    padStart: 2
-  };
+  const wheels: WheelConfig[] = [
+    {
+      min: 0,
+      max: 999,
+      value: integerPart,
+      onChange: handleIntegerChange
+    },
+    {
+      min: 0,
+      max: 99,
+      value: decimalPart,
+      onChange: handleDecimalChange,
+      padStart: 2
+    }
+  ];
 
   return (
     <div className={styles.container}>
@@ -51,8 +52,7 @@ export function DistanceInput({
         <UnitToggle value={unit} onChange={onUnitChange} mode="distance" />
       </div>
       <WheelPicker
-        leftWheel={leftWheel}
-        rightWheel={rightWheel}
+        wheels={wheels}
         separator="."
         unit={unit}
       />

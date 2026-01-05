@@ -1,31 +1,37 @@
-import styles from './PaceInput.module.css';
-import { UnitToggle } from './UnitToggle';
+import styles from './TimeInput.module.css';
 import { WheelPicker, type WheelConfig } from './WheelPicker';
-import { type Unit } from '../utils/paceCalculations';
 
-interface PaceInputProps {
+interface TimeInputProps {
+  hours: number;
   minutes: number;
   seconds: number;
-  unit: Unit;
+  onHoursChange: (hours: number) => void;
   onMinutesChange: (minutes: number) => void;
   onSecondsChange: (seconds: number) => void;
-  onUnitChange: (unit: Unit) => void;
 }
 
-export function PaceInput({
+export function TimeInput({
+  hours,
   minutes,
   seconds,
-  unit,
+  onHoursChange,
   onMinutesChange,
-  onSecondsChange,
-  onUnitChange
-}: PaceInputProps) {
+  onSecondsChange
+}: TimeInputProps) {
   const wheels: WheelConfig[] = [
     {
-      min: 2,
-      max: 20,
+      min: 0,
+      max: 9,
+      value: hours,
+      onChange: onHoursChange,
+      padStart: 1
+    },
+    {
+      min: 0,
+      max: 59,
       value: minutes,
-      onChange: onMinutesChange
+      onChange: onMinutesChange,
+      padStart: 2
     },
     {
       min: 0,
@@ -38,13 +44,10 @@ export function PaceInput({
 
   return (
     <div className={styles.container}>
-      <div className={styles.unitToggle}>
-        <UnitToggle value={unit} onChange={onUnitChange} />
-      </div>
+      <div className={styles.label}>Target Time</div>
       <WheelPicker
         wheels={wheels}
         separator=":"
-        unit={unit}
       />
     </div>
   );
